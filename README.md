@@ -4,7 +4,7 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 The deployment follows AWS best practices for security and scalability, utilizing a custom VPC, isolated Public/Private subnets, an Application Load Balancer, and Nginx as a reverse proxy.
 
@@ -12,7 +12,7 @@ The deployment follows AWS best practices for security and scalability, utilizin
 
 ---
 
-## 🛠 Phase 1: Networking & Infrastructure Deep-Dive
+## Phase 1: Networking & Infrastructure Deep-Dive
 
 ### 1.1 Custom VPC & Subnet Architecture
 The foundation is a dedicated VPC (`TravelMemory-vpc`) with a `172.31.0.0/16` CIDR. To ensure high availability, subnets were distributed across multiple Availability Zones.
@@ -44,7 +44,7 @@ List of Security Groups Created:
 
 ---
 
-## 🌐 Phase 2: Frontend and Backend Infrastructure
+## Phase 2: Frontend and Backend Infrastructure
 
 ### 2.1 Frontend Instances Launch & Environment Setup
 Launched a Ubuntu 24.04 EC2 server and configured the React application to optimize for production that was served via a Nginx configuration.
@@ -91,7 +91,7 @@ Launched a Ubuntu 24.04 EC2 server and configured the environment.
 
 ---
 
-## 🚀 Phase 3: MongoDB & Nginx Setup with SSL Configuration
+## Phase 3: MongoDB & Nginx Setup with SSL Configuration
 
 ### 3.1 MongoDB Cluster Creation and Connectivity
 Create a new MongoDB cluster named TravelMemory via https://cloud.mongodb.com/ using FreeTier and test connectivity using MongoDB Compass installed locally:
@@ -126,7 +126,7 @@ Security was reinforced by implementing SSL certificate created in EC2 using Ngi
 
 ---
 
-## ⚖️ Phase 4: Load Balancing & DNS Integration
+## Phase 4: Load Balancing & DNS Integration
 
 ### 4.1 Application Load Balancer (ALB)
 The ALB manages incoming traffic and health checks for the frontend tier.
@@ -174,7 +174,7 @@ Connected the domain `thiagarajanb.dpdns.org` to the AWS infrastructure via Clou
 
 ---
 
-## 📊 Phase 5: Live Application Verification
+## Phase 5: Live Application Verification
 
 The application is fully functional and accessible via the custom domain with a valid SSL certificate.
 
@@ -192,7 +192,7 @@ The application is fully functional and accessible via the custom domain with a 
 
 ---
 
-## 📝 Key Learnings
+## Key Learnings
 
 * Architecting Secure Networking: Mastered the practical implementation of a custom AWS VPC, including subnet segmentation (Public/Private), Internet Gateway integration, and granular Route Table management to ensure a secure, multi-tier environment.
 * Full-Lifecycle Load Balancing: Gained hands-on experience in orchestrating Application Load Balancers (ALB), including Target Group management, advanced Listener rules, and the implementation of robust Health Check protocols for high-availability routing.
@@ -201,4 +201,4 @@ The application is fully functional and accessible via the custom domain with a 
 * Managed DNS & Edge Integration: Learned to bridge on-premise domain management with cloud infrastructure by configuring Cloudflare DNS, managing CNAME/A records, and verifying global propagation to connect a custom domain.
 
 ---
-*Deployed by Thiagarajan B.* 
+*Deployed by Thiagarajan Baskarasubramanian.* 
