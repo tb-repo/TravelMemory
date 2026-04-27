@@ -1,0 +1,260 @@
+Description
+Introduction:
+
+The Travel Memory application has been developed using the MERN stack. Your challenge is to deploy this application on an Amazon EC2 instance. This will provide you with hands-on experience in deploying full-stack applications, working with cloud platforms, and ensuring scalable architecture.
+
+Project Repository:
+
+Access the complete codebase of the TravelMemory application from the provided GitHub link: https://github.com/UnpredictablePrashant/TravelMemory
+
+Objective:
+
+- Set up the backend running on Node.js.
+
+- Configure the front end designed with React.
+
+- Ensure efficient communication between the front end and back end.
+
+- Deploy the full application on an EC2 instance.
+
+- Facilitate load balancing by creating multiple instances of the application.
+
+- Connect a custom domain through Cloudflare.
+
+ Tasks:
+
+1. Backend Configuration:
+
+- Clone the repository and navigate to the backend directory.
+
+- The backend runs on port 3000. Set up a reverse proxy using nginx to ensure smooth deployment on EC2.
+
+- Update the .env file to incorporate database connection details and port information.
+
+2. Frontend and Backend Connection:
+
+- Navigate to the `urls.js` in the frontend directory.
+
+ - Update the file to ensure the front end communicates effectively with the backend.
+
+3. Scaling the Application:
+
+- Create multiple instances of both the frontend and backend servers.
+
+- Add these instances to a load balancer to ensure efficient distribution of incoming traffic.
+
+4. Domain Setup with Cloudflare:
+
+- Connect your custom domain to the application using Cloudflare.
+
+- Create a CNAME record pointing to the load balancer endpoint.
+
+- Set up an A record with the IP address of the EC2 instance hosting the front end.
+
+5. Documentation:
+
+- Prepare comprehensive documentation detailing each step of the deployment process. Include relevant screenshots to make the process clear and reproducible.
+
+- Design a deployment architecture diagram using [draw.io](https://www.draw.io/) to visualize the flow and connections.
+
+Expected Deliverables:
+
+1. A fully functional Travel Memory application hosted on an EC2 instance, accessible via a custom domain.
+
+2. Detailed documentation of the deployment process with appropriate screenshots.
+
+3. A deployment architecture diagram.
+
+Evaluation Criteria:
+
+- Accuracy and effectiveness of the deployment.
+
+- Clarity and comprehensiveness of the documentation.
+
+- Adherence to best practices in terms of security, scalability, and resilience.
+
+Hints:
+
+While setting up with Cloudflare, remember that a CNAME record is essential for linking the load balancer endpoint. An A record, on the other hand, connects the EC2 instance via its IP address.
+
+Submission Instructions:
+
+To submit your assignment, please follow these guidelines:
+
+- Ensure that your assignment is fully completed.
+
+- Push your code to a GitHub repository.
+
+- Share the repository link by including it in a text, Word, or PDF file format.
+
+Submit the file/text containing the repository link via Vlearn.
+
+--
+
+
+Yes—you can (and often do) run the React frontend and the Node/Express backend on two separate EC2 instances. For a beginner deployment, it’s a valid setup, but it adds a bit more configuration (CORS, DNS, security groups). It’s also common in real-world apps when you want to scale frontend and backend independently.
+
+What your selected snippet means (and where it belongs)
+Selected code:
+
+travelmemory?retryWrites=true&w=majority
+This is part of a MongoDB Atlas connection string, and it belongs on the backend EC2, not the React frontend.
+
+travelmemory = the database name your backend will connect to
+retryWrites=true = tells the driver to retry certain write operations automatically
+w=majority = “write concern”; MongoDB confirms writes only after most replica set members acknowledge (safer defaults)
+In practice, it appears inside something like:
+
+MONGO_URI="mongodb+srv://<user>:<pass>@<cluster-host>/travelmemory?retryWrites=true&w=majority"
+Your frontend should never contain this, because it would expose credentials if bundled.
+
+How 2-EC2 setup looks (frontend deploy step context)
+1) Backend EC2 (API server)
+Runs Node/Express (e.g., on port 5000)
+Has environment variables like MONGO_URI (includes your snippet)
+Security Group inbound:
+Allow 22 (SSH) from your IP
+Allow API port (often 5000) only from the frontend EC2 security group (best practice), or temporarily from anywhere while testing
+2) Frontend EC2 (React)
+Usually served as static files via Nginx (recommended)
+Calls the backend via a public URL, e.g.:
+http://<backend-public-ip>:5000
+or https://api.yourdomain.com
+In your React code, you’ll set something like:
+
+// example: src/api.js or wherever you store API base URL
+const API_BASE_URL = "http://<BACKEND_EC2_PUBLIC_IP>:5000";
+Required configs when frontend + backend are separate
+A) Enable CORS on the backend
+Your backend must allow requests from your frontend origin:
+
+import cors from "cors";
+
+app.use(cors({
+  origin: "http://<FRONTEND_EC2_PUBLIC_IP>", // or your domain
+  credentials: true
+}));
+B) Security group rules (important)
+Backend inbound should not be wide open long-term.
+Best practice: allow backend port only from the frontend EC2 (by referencing its Security Group).
+Quick sanity checks (debug)
+On the frontend EC2, test reaching the backend:
+
+curl http://<BACKEND_EC2_PUBLIC_IP>:5000/health
+If it fails:
+
+Check backend is listening on 0.0.0.0 (not localhost)
+Check backend security group inbound for port 5000
+Check backend server is running (pm2/systemd logs)
+If you tell me what you’re using to serve the frontend on EC2 (Nginx? npm start? S3?), I can give the exact configuration for the API URL and CORS for your setup.
+
+ERROR
+Network Error
+AxiosError: Network Error
+    at XMLHttpRequest.handleError (https://travelmemory.thiagarajanb.dpdns.org/static/js/bundle.js:48961:14)
+	
+	
+	That Axios “Network Error” from your React bundle almost always means the browser couldn’t reach your backend API at all (DNS/URL wrong, HTTPS mixed-content blocked, CORS, security group, or backend not listening). Since your frontend is on https://travelmemory.thiagarajanb.dpdns.org, the most common cause is your React app is calling http://... (or a private IP/localhost) and the browser blocks it or can’t route to it.
+
+1) Confirm what URL React is calling (fastest)
+On your deployed site:
+
+Open DevTools → Console and Network tab
+Click the failing request (red)
+Look at Request URL
+If it’s http://... while your site is https://... → mixed content (blocked)
+If it’s http://localhost:5000 or http://127.0.0.1 → React is still using local dev URL
+If it’s an EC2 private IP → not reachable from browser
+Also check Console for a message like: Mixed Content: The page at ... was loaded over HTTPS, but requested an insecure resource...
+
+2) Fix the API base URL in your React build (most common)
+You need React to call a publicly reachable backend domain.
+
+If your React code uses an env var (recommended)
+Example (React):
+
+// api.js
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+});
+Set on EC2 before building:
+
+cd ~/your-frontend-folder
+echo "REACT_APP_API_URL=https://travelmemory.thiagarajanb.dpdns.org/api" > .env
+npm install
+npm run build
+Then ensure your web server (often Nginx) is serving the updated build/.
+
+If your code hardcodes localhost
+Search and replace:
+
+grep -R "localhost" -n src
+grep -R "127.0.0.1" -n src
+grep -R "http://" -n src
+Update it to your backend URL (or better: env var), then rebuild:
+
+npm run build
+3) Decide how frontend reaches backend (two correct patterns)
+Pattern A (simplest for beginners): Same domain + /api reverse proxy
+Frontend calls:
+
+https://travelmemory.thiagarajanb.dpdns.org/api/...
+Nginx forwards /api to Node/Express on localhost:5000.
+
+Nginx snippet:
+
+location /api/ {
+  proxy_pass http://127.0.0.1:5000/;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+}
+Reload:
+
+sudo nginx -t
+sudo systemctl reload nginx
+Pattern B: Separate backend domain/subdomain
+Frontend calls:
+
+https://api.travelmemory.thiagarajanb.dpdns.org/...
+Then you must configure CORS on Express (next section).
+
+4) If it’s not mixed content: verify CORS (only if calling a different origin)
+In your Express app:
+
+import cors from "cors";
+
+app.use(cors({
+  origin: "https://travelmemory.thiagarajanb.dpdns.org",
+  credentials: true,
+}));
+Restart backend (PM2 example):
+
+pm2 restart all
+pm2 logs
+5) Verify backend is reachable from the EC2 itself
+SSH into EC2 and run:
+
+curl -i http://127.0.0.1:5000/api/health
+(or whatever your health/test endpoint is)
+
+If that fails, your backend isn’t running/listening where you think. Check:
+
+pm2 status
+pm2 logs
+sudo lsof -i :5000
+6) If backend is public: check EC2 Security Group / port exposure
+If you’re not proxying through Nginx and expect the browser to hit :5000 directly:
+
+Security Group must allow inbound TCP 5000 (not recommended long-term)
+Better: only allow 80/443 and use Nginx reverse proxy (Pattern A)
+Tell me these 2 things and I’ll point to the exact fix:
+The Request URL shown in DevTools for the failing Axios call
+Are you using Nginx reverse proxy for /api or calling the backend directly on a port (like :5000)?
+
+---
+
+Gemini interaction: gemini --resume 597b275e-31cb-46eb-b9bf-ece69166ac18

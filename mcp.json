@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "aws-diagrams": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-aws-diagrams"
+      ]
+    }
+  }
+}

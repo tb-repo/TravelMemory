@@ -1,0 +1,3 @@
+travelmem_db_admin/0HvNlBDqpd0RljQ5
+
+mongodb+srv://travelmem_db_admin:0HvNlBDqpd0RljQ5@travelmemory.cquotwg.mongodb.net/travelmemory?retryWrites=true&w=majority
