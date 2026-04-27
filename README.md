@@ -4,7 +4,7 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 - [About TravelMemory](#-about-travelmemory)
 - [Core Features](#-core-features)
 - [Deployment Quick-Start](#-deployment-quick-start)
@@ -96,7 +96,7 @@ List of Security Groups Created:
 
 ---
 
-## 🌐 Phase 2: Frontend and Backend Infrastructure
+## Phase 2: Frontend and Backend Infrastructure
 
 ### 2.1 Frontend Instances Launch & Environment Setup
 Launched a Ubuntu 24.04 EC2 server and configured the React application to optimize for production that was served via a Nginx configuration.
@@ -143,7 +143,7 @@ Launched a Ubuntu 24.04 EC2 server and configured the environment.
 
 ---
 
-## 🚀 Phase 3: MongoDB & Nginx Setup with SSL Configuration
+## Phase 3: MongoDB & Nginx Setup with SSL Configuration
 
 ### 3.1 MongoDB Cluster Creation and Connectivity
 Create a new MongoDB cluster named TravelMemory via https://cloud.mongodb.com/ using FreeTier and test connectivity using MongoDB Compass installed locally:
@@ -178,7 +178,7 @@ Security was reinforced by implementing SSL certificate created in EC2 using Ngi
 
 ---
 
-## ⚖️ Phase 4: Load Balancing & DNS Integration
+## Phase 4: Load Balancing & DNS Integration
 
 ### 4.1 Application Load Balancer (ALB)
 The ALB manages incoming traffic and health checks for the frontend tier.
@@ -226,7 +226,7 @@ Connected the domain `thiagarajanb.dpdns.org` to the AWS infrastructure via Clou
 
 ---
 
-## 📊 Phase 5: Live Application Verification
+## Phase 5: Live Application Verification
 
 The application is fully functional and accessible via the custom domain with a valid SSL certificate.
 
@@ -244,7 +244,7 @@ The application is fully functional and accessible via the custom domain with a 
 
 ---
 
-## 📝 Key Learnings
+## Key Learnings
 
 * Architecting Secure Networking: Mastered the practical implementation of a custom AWS VPC, including subnet segmentation (Public/Private), Internet Gateway integration, and granular Route Table management to ensure a secure, multi-tier environment.
 * Full-Lifecycle Load Balancing: Gained hands-on experience in orchestrating Application Load Balancers (ALB), including Target Group management, advanced Listener rules, and the implementation of robust Health Check protocols for high-availability routing.
