@@ -96,7 +96,7 @@ List of Security Groups Created:
 
 ---
 
-## Phase 2: Frontend and Backend Infrastructure
+## Phase 2: Frontend and Backend Infrastructure Setup
 
 ### 2.1 Frontend Instances Launch & Environment Setup
 Launched a Ubuntu 24.04 EC2 server and configured the React application to optimize for production that was served via a Nginx configuration.
