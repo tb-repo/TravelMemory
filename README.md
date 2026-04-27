@@ -4,6 +4,58 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 
 ---
 
+## Table of Contents
+- [About TravelMemory](#about-travelmemory)
+- [Core Features](#core-features)
+- [Deployment Quick-Start](#deployment-quick-start)
+- [Architecture Overview](#architecture-overview)
+- [Phase 1: Networking & Infrastructure Deep-Dive](#phase-1-networking--infrastructure-deep-dive)
+- [Phase 2: Frontend and Backend Infrastructure Setup](#phase-2-frontend-and-backend-infrastructure-setup)
+- [Phase 3: MongoDB & Nginx Setup with SSL Configuration](#phase-3-mongodb--nginx-setup-with-ssl-configuration)
+- [Phase 4: Load Balancing & DNS Integration](#phase-4-load-balancing--dns-integration)
+- [Phase 5: Live Application Verification](#phase-5-live-application-verification)
+- [Key Learnings and Highlights](#key-learnings-and-highlights)
+
+---
+
+## About TravelMemory
+**TravelMemory** is a full-stack MERN (MongoDB, Express, React, Node.js) application designed for travel enthusiasts to document and cherish their journeys. It serves as a digital travel journal where users can store details about their trips, including the places they visited, the hotels they stayed at, and the unique experiences they had.
+
+The application is built to be lightweight, responsive, and easy to use, providing a seamless way to preserve travel memories forever.
+
+## Core Features
+- **Experience Journal**: Capture detailed notes about your trips, including start/end dates and personal reflections.
+- **Trip Categorization**: Organize memories by trip type, such as *Leisure*, *Backpacking*, or *Business*.
+- **Expense Tracking**: Keep a record of the total cost associated with each journey.
+- **Visual Memories**: Support for attaching images to each travel entry (via URL).
+- **Featured Experiences**: Highlight specific trips on the homepage for quick access.
+- **Responsive Design**: A user-friendly interface that works across various devices.
+
+---
+
+## Deployment Quick-Start
+To deploy this application for your own use, follow these high-level steps:
+
+1.  **Cloud Infrastructure**: Set up a custom VPC with Public and Private subnets. Configure Security Groups to allow traffic on ports 80 (HTTP), 443 (HTTPS), and 3001 (Backend API).
+2.  **Database**: Create a MongoDB Atlas cluster and obtain your connection string.
+3.  **Backend Tier**: 
+    - Launch an EC2 instance in the Private subnet.
+    - Clone the repository and configure the `.env` file in the `backend/` directory with your `MONGO_URI` and `PORT=3001`.
+    - Install dependencies and start the Node.js server (using PM2 for persistence).
+4.  **Frontend Tier**: 
+    - Launch an EC2 instance in the Public subnet.
+    - Update `frontend/src/url.js` to point to your backend API.
+    - Generate a production build (`npm run build`).
+    - Configure Nginx as a reverse proxy to serve the build files and forward API requests.
+5.  **Traffic Management**: 
+    - Set up an Application Load Balancer (ALB) to distribute traffic.
+    - Configure Target Groups and Health Checks.
+6.  **Domain & Security**: 
+    - Point your custom domain to the ALB DNS using Cloudflare (CNAME).
+    - Provision an SSL certificate via AWS Certificate Manager (ACM) for HTTPS.
+
+---
+
 ## Architecture Overview
 
 The deployment follows AWS best practices for security and scalability, utilizing a custom VPC, isolated Public/Private subnets, an Application Load Balancer, and Nginx as a reverse proxy.
@@ -192,7 +244,7 @@ The application is fully functional and accessible via the custom domain with a 
 
 ---
 
-## Key Learnings
+## Key Learnings and Highlights
 
 * Architecting Secure Networking: Mastered the practical implementation of a custom AWS VPC, including subnet segmentation (Public/Private), Internet Gateway integration, and granular Route Table management to ensure a secure, multi-tier environment.
 * Full-Lifecycle Load Balancing: Gained hands-on experience in orchestrating Application Load Balancers (ALB), including Target Group management, advanced Listener rules, and the implementation of robust Health Check protocols for high-availability routing.
@@ -201,4 +253,4 @@ The application is fully functional and accessible via the custom domain with a 
 * Managed DNS & Edge Integration: Learned to bridge on-premise domain management with cloud infrastructure by configuring Cloudflare DNS, managing CNAME/A records, and verifying global propagation to connect a custom domain.
 
 ---
-*Deployed by Thiagarajan Baskarasubramanian.* 
+*Deployed by Thiagarajan Baskarasubramanian* 
