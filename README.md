@@ -14,7 +14,7 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 - [Phase 3: MongoDB & Nginx Setup with SSL Configuration](#phase-3-mongodb-&-nginx-setup-with-ssl-configuration)
 - [Phase 4: Load Balancing & DNS Integration](#phase-4-load-balancing-&-dns-integration)
 - [Phase 5: Live Application Verification](#phase-5-live-application-verification)
-- [Key Learnings](#key-learnings--implementation-highlights)
+- [Key Learnings and Highlights](#key-learnings-and-highlights)
 
 ---
 
@@ -244,7 +244,7 @@ The application is fully functional and accessible via the custom domain with a 
 
 ---
 
-## Key Learnings
+## Key Learnings and Highlights
 
 * Architecting Secure Networking: Mastered the practical implementation of a custom AWS VPC, including subnet segmentation (Public/Private), Internet Gateway integration, and granular Route Table management to ensure a secure, multi-tier environment.
 * Full-Lifecycle Load Balancing: Gained hands-on experience in orchestrating Application Load Balancers (ALB), including Target Group management, advanced Listener rules, and the implementation of robust Health Check protocols for high-availability routing.
