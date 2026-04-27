@@ -5,15 +5,15 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 ---
 
 ## Table of Contents
-- [About TravelMemory](#-about-travelmemory)
-- [Core Features](#-core-features)
-- [Deployment Quick-Start](#-deployment-quick-start)
-- [Architecture Overview](#-architecture-overview)
-- [Phase 1: Networking & Infrastructure](#-phase-1-networking--infrastructure-deep-dive)
-- [Phase 2: Backend Infrastructure](#-phase-2-backend-infrastructure-nodejsubuntu)
-- [Phase 3: Frontend & Reverse Proxy](#-phase-3-frontend--reverse-proxy-reactnginx)
-- [Phase 4: Load Balancing & DNS Integration](#-phase-4-load-balancing--dns-integration)
-- [Phase 5: Database & Live Application](#-phase-5-database--live-application)
+- [About TravelMemory](#about-travelmemory)
+- [Core Features](#core-features)
+- [Deployment Quick-Start](#deployment-quick-start)
+- [Architecture Overview](#architecture-overview)
+- [Phase 1: Networking & Infrastructure Deep-Dive](#phase-1-networking--infrastructure-deep-dive)
+- [Phase 2: Frontend and Backend Infrastructure Setup](#-phase-2-frontend-and-backend-infrastructure-setup)
+- [Phase 3: MongoDB & Nginx Setup with SSL Configuration](#-phase-3-mongodb-&-nginx-setup-with-ssl-configuration)
+- [Phase 4: Load Balancing & DNS Integration](#-phase-4-load-balancing-&-dns-integration)
+- [Phase 5: Live Application Verification](#-phase-5-live-application-verification)
 - [Key Learnings](#-key-learnings--implementation-highlights)
 
 ---
@@ -253,4 +253,4 @@ The application is fully functional and accessible via the custom domain with a 
 * Managed DNS & Edge Integration: Learned to bridge on-premise domain management with cloud infrastructure by configuring Cloudflare DNS, managing CNAME/A records, and verifying global propagation to connect a custom domain.
 
 ---
-*Deployed by Thiagarajan B.* 
+*Deployed by Thiagarajan Baskarasubramanian* 
