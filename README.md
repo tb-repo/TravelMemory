@@ -10,11 +10,11 @@ A comprehensive documentation of the end-to-end deployment of the **TravelMemory
 - [Deployment Quick-Start](#deployment-quick-start)
 - [Architecture Overview](#architecture-overview)
 - [Phase 1: Networking & Infrastructure Deep-Dive](#phase-1-networking--infrastructure-deep-dive)
-- [Phase 2: Frontend and Backend Infrastructure Setup](#-phase-2-frontend-and-backend-infrastructure-setup)
-- [Phase 3: MongoDB & Nginx Setup with SSL Configuration](#-phase-3-mongodb-&-nginx-setup-with-ssl-configuration)
-- [Phase 4: Load Balancing & DNS Integration](#-phase-4-load-balancing-&-dns-integration)
-- [Phase 5: Live Application Verification](#-phase-5-live-application-verification)
-- [Key Learnings](#-key-learnings--implementation-highlights)
+- [Phase 2: Frontend and Backend Infrastructure Setup](#phase-2-frontend-and-backend-infrastructure-setup)
+- [Phase 3: MongoDB & Nginx Setup with SSL Configuration](#phase-3-mongodb-&-nginx-setup-with-ssl-configuration)
+- [Phase 4: Load Balancing & DNS Integration](#phase-4-load-balancing-&-dns-integration)
+- [Phase 5: Live Application Verification](#phase-5-live-application-verification)
+- [Key Learnings](#key-learnings--implementation-highlights)
 
 ---
 
