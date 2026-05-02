@@ -8,63 +8,74 @@ This repository contains the backend and database configuration for the TravelMe
 
 ## Setup Instructions
 
-### 1. Create a Docker Network
-Create a shared bridge network so the backend and database can communicate by name.
+### 1. Create a new Dockerfile:
+Create this file named Dockerfile inside backend folder:
+
 ```bash
-docker network create b16atm
+FROM node:25-alpine3.22
+WORKDIR /app
+COPY . .
+RUN npm install
+ENV PORT=3001
+ENV MONGO_URI="mongodb://admin:xxxx@mongodb_b16atm:27017/travelmemory?authsource=admin" -- use the same password set in the database
+EXPOSE 3001
+CMD ["node", "index.js"]
 ```
 
-### 2. Start the MongoDB Database
-Run the MongoDB container with root credentials and a persistent volume.
+### 2. Create a new docker-compose.yml file:
+Create a new docker-compose file in the root folder of this project with the below content:
+
 ```bash
-docker run -d \
-  --name mongodb_b16atm \
-  --network b16atm \
-  -p 27017:27017 \
-  -v mongo-data:/data/db \
-  -e MONGO_INITDB_ROOT_USERNAME=admin \
-  -e MONGO_INITDB_ROOT_PASSWORD=xxxxx \
-  mongo:latest
+services:
+  backend:
+    build: ./backend
+    #dockerfile: Dockerfile-xyzname -- If using a different name
+    container_name: tm_b16a_backend
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      MONGO_URI: "mongodb://admin:xxxx@tm_b16a_database:27017/travelmemory?authsource=admin" -- use the same password set in the database
+    networks:
+      - tmb16a_network
+    depends_on:
+      - database
+
+  database:
+    image: mongo
+    container_name: tm_b16a_database
+    # ports:
+    #   - "27019:27017"
+    volumes:
+      - mongo_data_tm:/data/db
+    networks:
+      - tmb16a_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: xxxxx (Any Preferred password)
+      MONGO_INITDB_DATABASE: travelmemory
+
+volumes:
+  mongo_data_tm:
+
+networks:
+  tmb16a_network:
 ```
 
-### 3. Build the Backend Image
-Navigate to the `backend` folder and build the image:
+### 3. Run docker compose Build and Start it:
+
 ```bash
-cd backend
-docker build -t travelmemory-backend .
-```
-
-### 4. Run the Backend Container
-Start the backend container attached to the same network:
-```bash
-docker run -d \
-  --name travel-backend \
-  --network b16atm \
-  -p 3001:3001 \
-  travelmemory-backend
-```
-
-## Environment Variables
-The application uses the following environment variables (defined in the Dockerfile):
-- `PORT`: 3001
-- `MONGO_URI`: `mongodb://admin:xxxxxx@mongodb_b16atm:27017/travelmemory?authSource=admin`
-
-## Troubleshooting
-If the backend fails to connect to the database (Authentication Error):
-1. Stop the containers: `docker rm -f travel-backend mongodb_b16atm`
-2. Remove the old volume: `docker volume rm mongo-data`
-3. Restart from **Step 2** to re-initialize the credentials.
-
+     docker compose build
+     docker compose up -d
 ---
+
 Your application should now be accessible at **http://localhost:3001**.
 
 
 ## Screenshots:
 
-![Docker Image 4](images/Backend/Docker_img4.png)
+![Docker Compose Image 1](images/Backend/Docker-compose-img1.png)
 
-![Docker Image 3](images/Backend/Docker_img3.png)
+![Docker Compose Image 2](images/Backend/Docker-compose-img2.png)
 
-![Docker Image 2](images/Backend/Docker_img2.png)
-
-![Docker Image 1](images/Backend/Docker_img1.png)
+![Docker Compose Image 3](images/Backend/Docker-compose-img3.png)
