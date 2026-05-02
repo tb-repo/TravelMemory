@@ -67,15 +67,13 @@ networks:
 ```bash
      docker compose build
      docker compose up -d
+```
 ---
 
 Your application should now be accessible at **http://localhost:3001**.
 
-
 ## Screenshots:
 
-![Docker Compose Image 1](images/Backend/Docker-compose-img1.png)
-
-![Docker Compose Image 2](images/Backend/Docker-compose-img2.png)
-
-![Docker Compose Image 3](images/Backend/Docker-compose-img3.png)
+![Docker Compose Image 1](./images/Backend/Docker-compose-img1.png)
+![Docker Compose Image 2](./images/Backend/Docker-compose-img2.png)
+![Docker Compose Image 3](./images/Backend/Docker-compose-img3.png)
