@@ -23,7 +23,7 @@ docker run -d \
   -p 27017:27017 \
   -v mongo-data:/data/db \
   -e MONGO_INITDB_ROOT_USERNAME=admin \
-  -e MONGO_INITDB_ROOT_PASSWORD=password123 \
+  -e MONGO_INITDB_ROOT_PASSWORD=xxxxx \
   mongo:latest
 ```
 
@@ -47,7 +47,7 @@ docker run -d \
 ## Environment Variables
 The application uses the following environment variables (defined in the Dockerfile):
 - `PORT`: 3001
-- `MONGO_URI`: `mongodb://admin:password123@mongodb_b16atm:27017/travelmemory?authSource=admin`
+- `MONGO_URI`: `mongodb://admin:xxxxxx@mongodb_b16atm:27017/travelmemory?authSource=admin`
 
 ## Troubleshooting
 If the backend fails to connect to the database (Authentication Error):
@@ -57,3 +57,14 @@ If the backend fails to connect to the database (Authentication Error):
 
 ---
 Your application should now be accessible at **http://localhost:3001**.
+
+
+## Screenshots:
+
+![Docker Image 4](images/Backend/Docker_img4.png)
+
+![Docker Image 3](images/Backend/Docker_img3.png)
+
+![Docker Image 2](images/Backend/Docker_img2.png)
+
+![Docker Image 1](images/Backend/Docker_img1.png)
