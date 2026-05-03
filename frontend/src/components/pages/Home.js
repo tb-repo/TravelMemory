@@ -8,9 +8,18 @@ export default function Home() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`${baseUrl}/api/trip`)
-      .then((res) => setData(res.data))
-      .catch((err) => console.error(err));
+    axios.get(`${baseUrl}/trip`)
+      .then((res) => {
+        const trips = Array.isArray(res.data) ? res.data : [];
+        if (!Array.isArray(res.data)) {
+          console.error("Unexpected /trip response:", res.data);
+        }
+        setData(trips);
+      })
+      .catch((err) => {
+        console.error(err);
+        setData([]);
+      });
   }, []);
 
   if (data.length > 0) {
