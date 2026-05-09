@@ -2,33 +2,42 @@ services:
   backend:
     build: ./backend
     #dockerfile: Dockerfile-xyzname -- If using a different name
-    container_name: tm_b16a_backend
+    container_name: travelmemory_backend
     ports:
       - "3001:3001"
     environment:
       PORT: 3001
-      MONGO_URI: "mongodb://admin:password123@tm_b16a_database:27017/travelmemory?authsource=admin"
+      MONGO_URI: "mongodb://admin:xxxxxx@mongodb_tbtm:27017/travelmemory?authsource=admin"
     networks:
-      - tmb16a_network
+      - b16atm
     depends_on:
       - database
 
   database:
-    image: mongo
-    container_name: tm_b16a_database
+    image: mongo:latest
+    container_name: mongodb_tbtm
     # ports:
     #   - "27019:27017"
     volumes:
-      - mongo_data_tm:/data/db
+      - mongodb-data:/data/db
     networks:
-      - tmb16a_network
+      - b16atm
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_ROOT_PASSWORD: xxxxxxx
       MONGO_INITDB_DATABASE: travelmemory
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    environment:
+      REACT_APP_BASE_URL: "http://localhost:3001"
+    networks:
+      - b16atm
+      
 volumes:
-  mongo_data_tm:
+  mongodb-data:
 
 networks:
-  tmb16a_network:
+  b16atm:
