@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_ROOT_PASSWORD: xxxxxx
     volumes:
       - mongo-data:/data/db
     ports:
@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     environment:
       - PORT=3001
-      - MONGO_URI=mongodb://admin:password123@mongodb:27017/travelmemory?authsource=admin
+      - MONGO_URI=mongodb://admin:xxxxxx@mongodb:27017/travelmemory?authsource=admin
     ports:
       - "3001:3001"
     depends_on:
