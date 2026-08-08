@@ -74,12 +74,12 @@
     port: 27017
     timeout: 30
 
-- name: Check if admin user already exists
+- name: Check if admin user already exists and credentials work
   shell: |
-    mongosh --quiet --eval "db.getSiblingDB('admin').getUser('{{ db_user }}')"
-  register: user_check
-  changed_when: false
+    mongosh admin -u "{{ db_user }}" -p "{{ db_password }}" --eval "db.runCommand({connectionStatus: 1})"
+  register: auth_check
   failed_when: false
+  changed_when: false
 
 - name: Create database administrator & application user
   shell: |
@@ -88,4 +88,4 @@
       pwd: "{{ db_password }}",
       roles: [ { role: "userAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" } ]
     })'
-  when: "'null' in user_check.stdout or user_check.stdout == ''"
+  when: auth_check.rc != 0

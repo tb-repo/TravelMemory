@@ -44,7 +44,7 @@
 
 - name: Clone TravelMemory Git repository
   git:
-    repo: https://github.com/UnpredictablePrashant/TravelMemory.git
+    repo: https://github.com/tb-repo/TravelMemory.git
     dest: /home/ubuntu/TravelMemory
     version: main
     force: yes
