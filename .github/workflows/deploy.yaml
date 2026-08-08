@@ -1,0 +1,39 @@
+name: Deploy TravelMemory via Ansible
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH Private Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Prepare Ansible Inventory
+        run: |
+          sed -i "s/WEB_SERVER_PUBLIC_IP/${{ secrets.WEB_SERVER_IP }}/g" ansible/inventory.ini
+          sed -i "s/DB_SERVER_PRIVATE_IP/${{ secrets.DB_SERVER_IP }}/g" ansible/inventory.ini
+
+      - name: Create Secrets File
+        run: |
+          echo "db_user: \"${{ secrets.DB_USER }}\"" > ansible/secrets.yml
+          echo "db_password: \"${{ secrets.DB_PASSWORD }}\"" >> ansible/secrets.yml
+
+      - name: Run Ansible Playbook
+        run: |
+          export ANSIBLE_HOST_KEY_CHECKING=False
+          ansible-playbook -i ansible/inventory.ini ansible/site.yaml --extra-vars "@ansible/secrets.yml"
