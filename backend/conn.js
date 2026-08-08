@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const URL = process.env.MONGO_URI
 
-mongoose.connect(URL)
+mongoose.connect(URL, { dbName: 'travelmemory' })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => {
     console.error('MongoDB connection failed:', err)
