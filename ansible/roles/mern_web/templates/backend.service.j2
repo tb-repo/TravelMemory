@@ -1,0 +1,14 @@
+[Unit]
+Description=TravelMemory Backend Service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/TravelMemory/backend
+EnvironmentFile=/home/ubuntu/TravelMemory/backend/.env
+ExecStart=/usr/bin/node index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

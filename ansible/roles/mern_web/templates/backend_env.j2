@@ -1,0 +1,2 @@
+PORT=3001
+MONGO_URI=mongodb://{{ db_user }}:{{ db_password }}@{{ hostvars['db_server']['ansible_host'] }}:27017/travelmemory?authSource=admin

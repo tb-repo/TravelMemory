@@ -1,0 +1,12 @@
+---
+- name: Configure Database Servers
+  hosts: dbserver
+  become: yes
+  roles:
+    - mongodb
+
+- name: Configure Web Servers
+  hosts: webserver
+  become: yes
+  roles:
+    - mern_web

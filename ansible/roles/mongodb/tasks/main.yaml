@@ -1,0 +1,91 @@
+---
+- name: Install dependencies
+  apt:
+    name:
+      - gnupg
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Create keyring directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download MongoDB GPG key
+  get_url:
+    url: https://www.mongodb.org/static/pgp/server-8.0.asc
+    dest: /etc/apt/keyrings/mongodb-server-8.0.asc
+    mode: '0644'
+
+- name: Add MongoDB 8.0 repository
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 signed-by=/etc/apt/keyrings/mongodb-server-8.0.asc ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse"
+    state: present
+    filename: mongodb-org-8.0
+
+- name: Install MongoDB
+  apt:
+    name: mongodb-org
+    state: present
+    update_cache: yes
+
+- name: Copy configuration file
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+  register: mongod_config
+
+- name: Create systemd override directory for MongoDB
+  file:
+    path: /etc/systemd/system/mongod.service.d
+    state: directory
+    mode: '0755'
+
+- name: Configure GLIBC_TUNABLES environment override for MongoDB
+  copy:
+    content: |
+      [Service]
+      Environment="GLIBC_TUNABLES=glibc.pthread.rseq=1"
+    dest: /etc/systemd/system/mongod.service.d/override.conf
+    mode: '0644'
+  register: mongod_override
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+  when: mongod_override.changed
+
+- name: Start and enable MongoDB
+  service:
+    name: mongod
+    state: started
+    enabled: yes
+
+- name: Restart MongoDB if override or configuration changed
+  service:
+    name: mongod
+    state: restarted
+  when: mongod_override.changed or mongod_config.changed
+
+- name: Wait for MongoDB to start
+  wait_for:
+    port: 27017
+    timeout: 30
+
+- name: Check if admin user already exists
+  shell: |
+    mongosh --quiet --eval "db.getSiblingDB('admin').getUser('{{ db_user }}')"
+  register: user_check
+  changed_when: false
+  failed_when: false
+
+- name: Create database administrator & application user
+  shell: |
+    mongosh admin --eval 'db.createUser({
+      user: "{{ db_user }}",
+      pwd: "{{ db_password }}",
+      roles: [ { role: "userAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" } ]
+    })'
+  when: "'null' in user_check.stdout or user_check.stdout == ''"
