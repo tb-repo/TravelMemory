@@ -154,3 +154,5 @@ The React UI loads successfully and fetches stored trips from the database:
 Adding new travel logs via the UI functions correctly, sending data to MongoDB through our secure Nginx API proxy:
 
 ![Adding Experience UI](images/Ansible/Travelmem_webpage_addexperience_working.png)
+
+![Reviewing the Experience UI](images/Ansible/Travelmem_webpage_experience_page_working.png)
