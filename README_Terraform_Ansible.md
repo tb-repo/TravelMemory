@@ -131,6 +131,14 @@ Sensitive keys and parameters are securely stored inside GitHub Actions environm
 ![Actions Deploy Step 1](images/GitHub/GitHub_Worklow_deploy_running.png)
 ![Actions Deploy Step 2](images/GitHub/GitHub_Worklow_deploy_running2.png)
 
+### 3. Build & Deployment Pipeline Status
+During the implementation of the CI/CD pipeline, we addressed and fixed SSH connection issues involving host key verification and runner username context:
+- **Failed Pipeline Attempts**: ![Failed Workflows](images/GitHub/GitHub_Worklow_deploy_failediterations.png)
+- **Detailed Connection Error Log**: ![Connection Error Log](images/GitHub/GitHub_Worklow_deploy_failediterations_error.png)
+
+After configuring the global SSH config file (`StrictHostKeyChecking no`) and explicitly passing the `ubuntu` username inside the inventory and playbook runner command, the pipeline built and deployed successfully:
+- **Successful Pipeline Run**: ![Pipeline Success](images/GitHub/GitHub_Worklow_deploy_successful.png)
+
 ---
 
 ## Phase 5: Final Application Verification
