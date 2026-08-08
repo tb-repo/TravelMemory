@@ -45,4 +45,4 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           export ANSIBLE_HOST_KEY_CHECKING=False
-          ansible-playbook -i ansible/inventory.ini ansible/site.yaml --extra-vars "@ansible/secrets.yml"
+          ansible-playbook -i ansible/inventory.ini ansible/site.yaml -u ubuntu --extra-vars "@ansible/secrets.yml"
