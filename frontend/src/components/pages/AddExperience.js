@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { baseUrl } from "../../url";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AddExperience() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
     const [formdata, setFormdata] = useState({
             tripName: "",
@@ -17,11 +19,19 @@ export default function AddExperience() {
             featured: false,
             shortDescription: ""
     })
-    const submitForm = () => {
+    const submitForm = async () => {
         setLoading(true);
         console.log(formdata)
-        axios.post(`${baseUrl}/api/trip`, formdata)
-        setLoading(false)
+        try {
+            await axios.post(`${baseUrl}/api/trip`, formdata);
+            alert("Trip added Successfully!");
+            navigate("/");
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("Failed to add trip. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     if(loading==true){
