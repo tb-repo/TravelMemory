@@ -2,6 +2,9 @@
 
 A comprehensive documentation of the end-to-end deployment of the **TravelMemory** application on AWS, demonstrating a highly available and secure 3-tier architecture with every implementation step verified.
 
+> **Looking for automated deployment?**
+> We have automated the entire infrastructure provisioning (using Terraform), configuration management (using Ansible), and CI/CD pipeline (using GitHub Actions) for this project. Please refer to [README_Terraform_Ansible.md](README_Terraform_Ansible.md) for step-by-step instructions on running the deployment and configuration automation.
+
 ---
 
 ## Table of Contents
